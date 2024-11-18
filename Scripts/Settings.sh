@@ -32,3 +32,71 @@ if [[ $WRT_TARGET == *"IPQ"* ]]; then
 	echo "CONFIG_FEED_nss_packages=n" >> ./.config
 	echo "CONFIG_FEED_sqm_scripts_nss=n" >> ./.config
 fi
+
+
+
+
+#######################################
+#DIY
+#######################################
+WRT_IP="192.168.1.1"
+WRT_NAME="FWRT"
+WRT_WIFI="FWRT"
+#修改immortalwrt.lan关联IP
+sed -i "s/192\.168\.[0-9]*\.[0-9]*/$WRT_IP/g" $(find ./feeds/luci/modules/luci-mod-system/ -type f -name "flash.js")
+#修改默认WIFI名
+sed -i "s/\.ssid=.*/\.ssid=$WRT_WIFI/g" $(find ./package/kernel/mac80211/ ./package/network/config/ -type f -name "mac80211.*")
+
+#修改默认IP地址
+sed -i "s/192\.168\.[0-9]*\.[0-9]*/$WRT_IP/g" $CFG_FILE
+#修改默认主机名
+sed -i "s/hostname='.*'/hostname='$WRT_NAME'/g" $CFG_FILE
+
+#补齐依赖
+sudo -E apt-get -y install $(curl -fsSL is.gd/depends_ubuntu_2204)
+
+keywords_to_delete=(
+    "abt_asr3000" "cmcc_a10" "xiaomi_ax1800" "glinet" "h3c_magic-nx30-pro" "jdcloud_re-cp-03" "konka_komi-a31" "netcore_n60" "zyxel_ex5700-telenor" "cmiot_ax18"
+    "nokia_ea0326gmp" "qihoo_360t7" "xiaomi_ax1800" "ruijie_rg-x60-pro" "tplink" "xiaomi_mi-router-ax3000t" "xiaomi_mi-router-wr30u" "xiaomi_redmi-router-ax6000"
+    "abt_asr3000" "qihoo_360v6" "redmi_ax5" "redmi_ax5-jdcloud" "cmcc_rm2-6""redmi_ax6-stock" "redmi_ax6" "xiaomi_ax3600-stock" "xiaomi_ax3600" "xiaomi_ax9000"
+    "cetron_ct3003" "imou_lc-hx3001" "jcg_q30-pro" 
+    "uugamebooster" "luci-app-wol" "luci-i18n-wol-zh-cn" "CONFIG_TARGET_INITRAMFS" "ddns" "luci-app-advancedplus" "luci-theme-kucat"
+)
+
+[[ $WRT_TARGET == *"WIFI-NO"* ]] && keywords_to_delete+=("usb" "wpad" "hostapd" "re-ss-01" "re-cs-02")
+[[ $WRT_TARGET != *"EMMC"* ]] && keywords_to_delete+=("samba" "autosamba""disk")
+[[ $WRT_TARGET == *"EMMC"* ]] && keywords_to_delete+=("zn_m2")
+
+for keyword in "${keywords_to_delete[@]}"; do
+    sed -i "/$keyword/d" ./.config
+done
+
+# Configuration lines to append to .config
+provided_config_lines=(
+   "CONFIG_PACKAGE_luci-app-cpufreq=y"
+    "CONFIG_PACKAGE_luci-app-ttyd=y"
+    "CONFIG_PACKAGE_luci-app-homeproxy=y"
+    "CONFIG_PACKAGE_luci-app-alist=y"
+    "CONFIG_PACKAGE_luci-app-mosdns=y"
+    "CONFIG_PACKAGE_luci-app-lucky=y"
+    "CONFIG_PACKAGE_luci-app-upnp=y"
+    "CONFIG_PACKAGE_luci-app-aria2=y"
+    "CONFIG_PACKAGE_luci-app-wolplus=y"
+    "CONFIG_PACKAGE_luci-app-samba4=y"
+)
+
+[[ $WRT_TARGET == *"WIFI-NO"* ]] && provided_config_lines+=("CONFIG_PACKAGE_hostapd-common=n" "CONFIG_PACKAGE_wpad-openssl=n")
+[[ $WRT_TARGET == *"EMMC"* ]] && provided_config_lines+=(
+    "CONFIG_PACKAGE_luci-app-diskman=y"
+    "CONFIG_PACKAGE_luci-app-dockerman=y"
+)
+
+# Append configuration lines to .config
+for line in "${provided_config_lines[@]}"; do
+    echo "$line" >> .config
+done
+
+
+#rm -rf package/feeds/packages/shadowsocks-rust
+#cp -r package/helloworld/shadowsocks-rust package/feeds/packages/shadowsocks-rust
+find ./ -name "getifaddr.c" -exec sed -i 's/return 1;/return 0;/g' {} \;
