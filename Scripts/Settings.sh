@@ -83,6 +83,7 @@ provided_config_lines=(
     "CONFIG_PACKAGE_luci-app-aria2=y"
     "CONFIG_PACKAGE_luci-app-wolplus=y"
     "CONFIG_PACKAGE_luci-app-samba4=y"
+    "CONFIG_PACKAGE_luci-app-hd-idle=y"
 )
 
 [[ $WRT_TARGET == *"WIFI-NO"* ]] && provided_config_lines+=("CONFIG_PACKAGE_hostapd-common=n" "CONFIG_PACKAGE_wpad-openssl=n")
