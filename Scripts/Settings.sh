@@ -63,7 +63,7 @@ keywords_to_delete=(
     "uugamebooster" "luci-app-wol" "luci-i18n-wol-zh-cn" "CONFIG_TARGET_INITRAMFS" "ddns" "luci-app-advancedplus" "luci-theme-kucat"
 )
 
-[[ $WRT_TARGET == *"WIFI-NO"* ]] && keywords_to_delete+=("usb" "wpad" "hostapd" "re-ss-01" "re-cs-02")
+[[ $WRT_TARGET == *"WIFI-NO"* ]] && keywords_to_delete+=("re-ss-01" "re-cs-02")
 [[ $WRT_TARGET != *"EMMC"* ]] && keywords_to_delete+=("samba" "autosamba""disk")
 [[ $WRT_TARGET == *"EMMC"* ]] && keywords_to_delete+=("zn_m2")
 
