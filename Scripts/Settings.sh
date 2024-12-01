@@ -87,6 +87,21 @@ provided_config_lines=(
 )
 
 [[ $WRT_TARGET == *"WIFI-NO"* ]] && provided_config_lines+=("CONFIG_PACKAGE_hostapd-common=n" "CONFIG_PACKAGE_wpad-openssl=n")
+if [[ $WRT_TAG == *"WIFI-NO"* ]]; then
+    provided_config_lines+=(
+        "CONFIG_PACKAGE_hostapd-common=n"
+        "CONFIG_PACKAGE_wpad-openssl=n"
+    )
+#else
+    #provided_config_lines+=(
+    #    "CONFIG_PACKAGE_kmod-usb-net=y"
+    #    "CONFIG_PACKAGE_kmod-usb-net-rndis=y"
+    #    "CONFIG_PACKAGE_kmod-usb-net-cdc-ether=y"
+    #    "CONFIG_PACKAGE_usbutils=y"
+    #)
+fi
+
+
 [[ $WRT_TARGET == *"EMMC"* ]] && provided_config_lines+=(
     "CONFIG_PACKAGE_luci-app-diskman=y"
     "CONFIG_PACKAGE_luci-app-dockerman=y"
@@ -98,6 +113,14 @@ for line in "${provided_config_lines[@]}"; do
 done
 
 
-#rm -rf package/feeds/packages/shadowsocks-rust
-#cp -r package/helloworld/shadowsocks-rust package/feeds/packages/shadowsocks-rust
+#./scripts/feeds update -a
+#./scripts/feeds install -a
+
+find ./ -name "cascade.css" -exec sed -i 's/#5e72e4/#6fa49a/g; s/#483d8b/#6fa49a/g' {} \;
+find ./ -name "dark.css" -exec sed -i 's/#5e72e4/#6fa49a/g; s/#483d8b/#6fa49a/g' {} \;
+
 find ./ -name "getifaddr.c" -exec sed -i 's/return 1;/return 0;/g' {} \;
+#find ./ -type d -name 'luci-app-ddns-go' -exec sh -c '[ -f "$1/Makefile" ] && sed -i "/config\/ddns-go/d" "$1/Makefile"' _ {} \;
+#find ./ -type d -name "luci-app-ddns-go" -exec sh -c 'f="{}/Makefile"; [ -f "$f" ] && echo "\ndefine Package/\$(PKG_NAME)/install\n\trm -f \$(1)/etc/config/ddns-go\n\t\$(call InstallDev,\$(1))\nendef\n" >> "$f"' \;
+#find ./ -type d -name "ddns-go" -exec sh -c 'f="{}/Makefile"; [ -f "$f" ] && sed -i "/\$(INSTALL_BIN).*\/ddns-go.init.*\/etc\/init.d\/ddns-go/d" "$f"' \;
+rm -rf ./feeds/packages/net/ddns-go;
