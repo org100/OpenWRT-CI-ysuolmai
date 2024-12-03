@@ -98,3 +98,8 @@ mkdir -p luci-app-diskman && \
 wget https://raw.githubusercontent.com/lisaac/luci-app-diskman/master/applications/luci-app-diskman/Makefile -O luci-app-diskman/Makefile
 mkdir -p parted && \
 wget https://raw.githubusercontent.com/lisaac/luci-app-diskman/master/Parted.Makefile -O parted/Makefile
+
+#删除官方的默认插件(homeproxy)
+#rm -rf feeds/luci/applications/luci-app-{passwall,mosdns,dockerman,dae*,bypass*}
+rm -rf feeds/packages/homeproxy
+git clone https://github.com/bulianglin/homeproxy homeproxy
