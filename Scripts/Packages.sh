@@ -102,5 +102,6 @@ wget https://raw.githubusercontent.com/lisaac/luci-app-diskman/master/Parted.Mak
 #删除官方的默认插件(homeproxy)
 #rm -rf feeds/luci/applications/luci-app-{passwall,mosdns,dockerman,dae*,bypass*}
 rm -rf homeproxy
+rm -rf package/homeproxy
 rm -rf feeds/luci/applications/luci-app-homeproxy
 git clone --depth=1 https://github.com/bulianglin/homeproxy package/homeproxy
