@@ -75,7 +75,7 @@ keywords_to_delete=(
     "abt_asr3000" "cmcc_a10" "xiaomi_ax1800" "glinet" "h3c_magic-nx30-pro" "jdcloud_re-cp-03" "konka_komi-a31" "netcore_n60" "zyxel_ex5700-telenor" "cmiot_ax18"
     "nokia_ea0326gmp" "qihoo_360t7" "xiaomi_ax1800" "ruijie_rg-x60-pro" "tplink" "xiaomi_mi-router-ax3000t" "xiaomi_mi-router-wr30u" "xiaomi_redmi-router-ax6000"
     "abt_asr3000" "qihoo_360v6" "redmi_ax5" "redmi_ax5-jdcloud" "cmcc_rm2-6""redmi_ax6-stock" "redmi_ax6" "xiaomi_ax3600-stock" "xiaomi_ax3600" "xiaomi_ax9000"
-    "cetron_ct3003" "imou_lc-hx3001" "jcg_q30-pro" "cmcc_rm2-6" "aliyun_ap8220"
+    "cetron_ct3003" "imou_lc-hx3001" "jcg_q30-pro" "cmcc_rm2-6" "aliyun_ap8220" "linksys_mr7350"
     "uugamebooster" "luci-app-wol" "luci-i18n-wol-zh-cn" "CONFIG_TARGET_INITRAMFS" "ddns" "luci-app-advancedplus" "luci-theme-kucat" "luci-app-mihomo"
 )
 
