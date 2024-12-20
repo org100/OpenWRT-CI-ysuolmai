@@ -140,3 +140,7 @@ find ./ -name "getifaddr.c" -exec sed -i 's/return 1;/return 0;/g' {} \;
 #find ./ -type d -name "luci-app-ddns-go" -exec sh -c 'f="{}/Makefile"; [ -f "$f" ] && echo "\ndefine Package/\$(PKG_NAME)/install\n\trm -f \$(1)/etc/config/ddns-go\n\t\$(call InstallDev,\$(1))\nendef\n" >> "$f"' \;
 #find ./ -type d -name "ddns-go" -exec sh -c 'f="{}/Makefile"; [ -f "$f" ] && sed -i "/\$(INSTALL_BIN).*\/ddns-go.init.*\/etc\/init.d\/ddns-go/d" "$f"' \;
 rm -rf ./feeds/packages/net/ddns-go;
+
+# 修复拨号问题
+sed -i "sed -i '8c maxfail 1' /etc/ppp/options" package/base-files/files/lib/functions/uci-defaults.sh
+sed -i 'sed -i "sed -i "192i sleep 30" /lib/netifd/proto/ppp.sh' package/base-files/files/lib/functions/uci-defaults.sh
